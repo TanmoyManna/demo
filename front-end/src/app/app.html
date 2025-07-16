@@ -1,0 +1,39 @@
+<div class="container">
+  <input #fileInput type="file" (change)="onFileChange($event)">
+  <div class="buttonContainer">
+    <button (click)="handleUploadImage()">Upload</button>
+    <button (click)="reset()">Reset</button>
+  </div>
+  <ng-container *ngIf="fileUrl">
+    <img [src]="fileUrl" alt="Downloadable Image" width="200" (click)="download(fileUrl)" />
+  </ng-container>
+  <div *ngIf="loader" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<table *ngIf="files.length > 0; else noData">
+  <thead>
+    <tr>
+      <th>File URL</th>
+      <th>Active</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Download</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let file of files">
+      <td><a [href]="file.fileUrl" target="_blank">{{ file.fileUrl }}</a></td>
+      <td>{{ file.isActive }}</td>
+      <td>{{ file.createdAt | date:'short' }}</td>
+      <td>{{ file.updatedAt | date:'short' }}</td>
+      <td> <button (click)="download(file.fileUrl)">Download</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #noData>
+  <p>No files available.</p>
+</ng-template>
